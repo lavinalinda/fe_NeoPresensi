@@ -350,12 +350,20 @@ export default function Dashboard() {
       <Sidebar />
 
       <div className="ml-16 p-6 transition-all duration-300">
+<<<<<<< HEAD
        <header className="mt-2 mb-6">
+=======
+        <header className="mt-2 mb-6">
+>>>>>>> 79877c185887fe976259646a5ab2e8d4c45be3e8
           <h3 className="text-lg font-medium font-poppins mb-1">
             Welcome to Absensi Neo Telemetri, Admin
           </h3>
           <h1 className="font-bold font-poppins text-3xl">Dashboard</h1>
+<<<<<<< HEAD
         </header> 
+=======
+        </header>
+>>>>>>> 79877c185887fe976259646a5ab2e8d4c45be3e8
 
 
         {/* Stat Cards */}

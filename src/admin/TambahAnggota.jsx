@@ -94,12 +94,32 @@ const TambahAnggota = () => {
                 <div className="max-w-7xl mx-auto">
 
                     <header className="mt-2 mb-6">
+                        
                         <h3 className="text-lg font-medium font-poppins mb-1">
                             Welcome to Absensi Neo Telemetri, Admin
                         </h3>
                         <h1 className="font-bold font-poppins text-3xl">Tambah Anggota</h1>
                     </header>
 
+=======
+                        <h3 className="text-lg font-medium mb-3">
+                            Welcome to Absensi Neo Telemetri, Admin
+                        </h3>
+
+                        <div className="flex items-center gap-3">
+                            <button
+                                onClick={handleCancel}
+                                className="p-2 hover:bg-gray-100 rounded-lg transition"
+                            >
+                                <ArrowLeftIcon className="w-5 h-5 text-gray-500" />
+                            </button>
+
+                            <h1 className="font-bold text-3xl">
+                                Tambah Anggota
+                            </h1>
+                        </div>
+                    </header>
+>>>>>>> 79877c185887fe976259646a5ab2e8d4c45be3e8
                     {/* Success */}
                     {successMessage && (
                         <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-6">
