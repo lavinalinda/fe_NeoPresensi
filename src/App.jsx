@@ -4,6 +4,7 @@ import Login from './user/Login'
 import Dashboard from "./admin/Dashboard";
 import Anggota from "./admin/Anggota";
 import TambahAnggota from "./admin/TambahAnggota";
+import EditAnggota from "./admin/EditAnggota";
 
 const App = () => {
   return (
@@ -13,6 +14,7 @@ const App = () => {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/anggota" element={<Anggota />} />
         <Route path="/tambah-anggota" element={<TambahAnggota />} />
+        <Route path="/edit-anggota/:id" element={<EditAnggota />} />
       </Routes>
     </BrowserRouter>
   )

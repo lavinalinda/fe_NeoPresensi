@@ -124,6 +124,8 @@ const Anggota = () => {
     const [filterShift, setFilterShift] = useState("Semua")
     const [filterHari, setFilterHari] = useState("Semua")
     const [currentPage, setCurrentPage] = useState(1)
+    const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+    const [deleteTarget, setDeleteTarget] = useState({ id: null, nama: "" })
     const itemsPerPage = 5
 
     // ─── Get Unique Values for Filters ──────────────────────────────────────
@@ -173,13 +175,23 @@ const Anggota = () => {
     // ─── Event Handlers ─────────────────────────────────────────────────────
 
     const handleEdit = (id) => {
-        alert(`Edit anggota dengan ID: ${id}`)
+        navigate(`/edit-anggota/${id}`)
     }
 
-    const handleDelete = (id) => {
-        if (window.confirm("Yakin ingin menghapus anggota ini?")) {
-            alert(`Anggota dengan ID ${id} telah dihapus`)
-        }
+    const openDeleteModal = (id, nama) => {
+        setDeleteTarget({ id, nama })
+        setDeleteModalOpen(true)
+    }
+
+    const confirmDelete = () => {
+        alert(`Anggota ${deleteTarget.nama} telah dihapus`)
+        setDeleteModalOpen(false)
+        setDeleteTarget({ id: null, nama: "" })
+    }
+
+    const closeDeleteModal = () => {
+        setDeleteModalOpen(false)
+        setDeleteTarget({ id: null, nama: "" })
     }
 
     const handleTambahAnggota = () => {
@@ -329,7 +341,7 @@ const Anggota = () => {
                                                                 <span>Edit</span>
                                                             </button>
                                                             <button
-                                                                onClick={() => handleDelete(item.id)}
+                                                                onClick={() => openDeleteModal(item.id, item.nama)}
                                                                 className="flex items-center gap-1 px-2 py-1 text-xs text-red-600 border border-red-300 rounded hover:bg-red-50 hover:border-red-400 transition"
                                                                 title="Hapus"
                                                             >
@@ -399,6 +411,74 @@ const Anggota = () => {
 
                 </div>
             </div>
+
+            {/* Modal Konfirmasi Hapus */}
+            {deleteModalOpen && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 animate-fadeIn">
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 p-6 animate-scaleIn">
+                        {/* Icon */}
+                        <div className="flex justify-center mb-4">
+                            <div className="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center">
+                                <TrashIcon className="w-7 h-7 text-red-600" />
+                            </div>
+                        </div>
+
+                        {/* Title */}
+                        <h2 className="text-xl font-bold text-gray-900 text-center mb-2">
+                            Hapus Anggota?
+                        </h2>
+
+                        {/* Message */}
+                        <p className="text-gray-600 text-center mb-6 text-sm">
+                            Apakah Anda benar-benar ingin menghapus anggota
+                            <span className="font-semibold text-gray-900"> {deleteTarget.nama}</span>?
+                            <br />
+                            Tindakan ini tidak dapat dibatalkan.
+                        </p>
+
+                        {/* Buttons */}
+                        <div className="flex gap-3">
+                            <button
+                                onClick={closeDeleteModal}
+                                className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition duration-200"
+                            >
+                                Batal
+                            </button>
+                            <button
+                                onClick={confirmDelete}
+                                className="flex-1 px-4 py-2.5 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition duration-200 flex items-center justify-center gap-2"
+                            >
+                                <TrashIcon className="w-4 h-4" />
+                                Hapus
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Animation Styles */}
+            <style>{`
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                @keyframes scaleIn {
+                    from { 
+                        opacity: 0; 
+                        transform: scale(0.95);
+                    }
+                    to { 
+                        opacity: 1; 
+                        transform: scale(1);
+                    }
+                }
+                .animate-fadeIn {
+                    animation: fadeIn 0.3s ease-out;
+                }
+                .animate-scaleIn {
+                    animation: scaleIn 0.3s ease-out;
+                }
+            `}</style>
         </div>
     )
 }

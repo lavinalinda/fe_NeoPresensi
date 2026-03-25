@@ -1,12 +1,113 @@
-import React, { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import React, { useState, useEffect } from "react"
+import { useNavigate, useParams } from "react-router-dom"
 import Sidebar from "../components/Sidebar"
 import "../App.css"
 import "@fontsource/poppins"
 import { ArrowLeftIcon, ArrowPathIcon } from "@heroicons/react/24/solid"
 
-const TambahAnggota = () => {
+// Mock data - dalam aplikasi real, ini akan diambil dari API/database
+const allAnggota = [
+    {
+        id: 1,
+        nama: "Budi Santoso",
+        nim: "2024001",
+        rfid: "RF001",
+        shift: "Shift 1",
+        hariPiket: "Senin",
+    },
+    {
+        id: 2,
+        nama: "Ani Wijaya",
+        nim: "2024002",
+        rfid: "RF002",
+        shift: "Shift 1",
+        hariPiket: "Selasa",
+    },
+    {
+        id: 3,
+        nama: "Citra Dewi",
+        nim: "2024003",
+        rfid: "RF003",
+        shift: "Shift 2",
+        hariPiket: "Rabu",
+    },
+    {
+        id: 4,
+        nama: "Doni Pratama",
+        nim: "2024004",
+        rfid: "RF004",
+        shift: "Shift 2",
+        hariPiket: "Kamis",
+    },
+    {
+        id: 5,
+        nama: "Eka Putri",
+        nim: "2024005",
+        rfid: "RF005",
+        shift: "Shift 1",
+        hariPiket: "Jumat",
+    },
+    {
+        id: 6,
+        nama: "Fajar Nugroho",
+        nim: "2024006",
+        rfid: "RF006",
+        shift: "Shift 3",
+        hariPiket: "Senin",
+    },
+    {
+        id: 7,
+        nama: "Gita Lestari",
+        nim: "2024007",
+        rfid: "RF007",
+        shift: "Shift 3",
+        hariPiket: "Selasa",
+    },
+    {
+        id: 8,
+        nama: "Hadi Kusuma",
+        nim: "2024008",
+        rfid: "RF008",
+        shift: "Shift 2",
+        hariPiket: "Rabu",
+    },
+    {
+        id: 9,
+        nama: "Indah Sari",
+        nim: "2024009",
+        rfid: "RF009",
+        shift: "Shift 1",
+        hariPiket: "Kamis",
+    },
+    {
+        id: 10,
+        nama: "Joko Purnomo",
+        nim: "2024010",
+        rfid: "RF010",
+        shift: "Shift 3",
+        hariPiket: "Jumat",
+    },
+    {
+        id: 11,
+        nama: "Kara Malik",
+        nim: "2024011",
+        rfid: "RF011",
+        shift: "Shift 4",
+        hariPiket: "Senin",
+    },
+    {
+        id: 12,
+        nama: "Lisa Mara",
+        nim: "2024012",
+        rfid: "RF012",
+        shift: "Shift 4",
+        hariPiket: "Selasa",
+    },
+]
+
+const EditAnggota = () => {
     const navigate = useNavigate()
+    const { id } = useParams()
 
     const [formData, setFormData] = useState({
         nama: "",
@@ -21,6 +122,26 @@ const TambahAnggota = () => {
     const [rfidScanned, setRfidScanned] = useState(false)
     const [rfidFocused, setRfidFocused] = useState(false)
     const [successMessage, setSuccessMessage] = useState("")
+    const [notFoundMessage, setNotFoundMessage] = useState("")
+
+    // Load data anggota berdasarkan ID
+    useEffect(() => {
+        const anggota = allAnggota.find((item) => item.id === parseInt(id))
+        if (anggota) {
+            setFormData({
+                nama: anggota.nama,
+                nim: anggota.nim,
+                rfid: anggota.rfid,
+                shift_id: anggota.shift,
+                hari_piket: anggota.hariPiket,
+            })
+        } else {
+            setNotFoundMessage("Anggota tidak ditemukan!")
+            setTimeout(() => {
+                navigate("/anggota")
+            }, 2000)
+        }
+    }, [id, navigate])
 
     const handleInputChange = (e) => {
         const { name, value } = e.target
@@ -67,15 +188,7 @@ const TambahAnggota = () => {
             return
         }
 
-        setSuccessMessage("Anggota berhasil ditambahkan! 🎉")
-
-        setFormData({
-            nama: "",
-            nim: "",
-            rfid: "",
-            shift_id: "",
-            hari_piket: "",
-        })
+        setSuccessMessage("Anggota berhasil diperbarui! 🎉")
 
         setTimeout(() => {
             navigate("/anggota")
@@ -97,10 +210,19 @@ const TambahAnggota = () => {
                         <h3 className="text-lg font-medium font-poppins mb-1">
                             Welcome to Absensi Neo Telemetri, Admin
                         </h3>
-                        <h1 className="font-bold font-poppins text-3xl">Tambah Anggota</h1>
+                        <h1 className="font-bold font-poppins text-3xl">Edit Anggota</h1>
                     </header>
 
-                    {/* Success */}
+                    {/* Error Message */}
+                    {notFoundMessage && (
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+                            <p className="text-red-700 text-sm font-medium">
+                                {notFoundMessage}
+                            </p>
+                        </div>
+                    )}
+
+                    {/* Success Message */}
                     {successMessage && (
                         <div className="bg-emerald-50 border border-emerald-200 rounded-lg p-4 mb-6">
                             <p className="text-emerald-700 text-sm font-medium">
@@ -266,7 +388,7 @@ const TambahAnggota = () => {
                                     type="submit"
                                     className="px-4 py-2 bg-blue-600 hover:bg-blue-800 text-white rounded-lg transition"
                                 >
-                                    Simpan
+                                    Simpan Perubahan
                                 </button>
                             </div>
 
@@ -278,4 +400,4 @@ const TambahAnggota = () => {
     )
 }
 
-export default TambahAnggota
+export default EditAnggota
